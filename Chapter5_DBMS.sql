@@ -1,4 +1,4 @@
---1. Find names of sailors who’ve reserved boat #103
+--1. Find names of sailors whoâ€™ve reserved boat #103
 select S.sname,S.sid
 from Sailors as S
 Join Reserves as R
@@ -9,7 +9,7 @@ where R.bid=103;
 	FROM     Sailors S, Reserves R
 	WHERE S.sid=R.sid AND R.bid=103
 
---2. Find names of sailors who’ve reserved a red boat
+--2. Find names of sailors whoâ€™ve reserved a red boat
 select *
 From Sailors as S
 Join Reserves as R
@@ -35,7 +35,7 @@ where B.bid = R.bid and R.sid = S.sid
 
 
 
---3. Find sailors who’ve reserved a red or a green boat
+--3. Find sailors whoâ€™ve reserved a red or a green boat
 select *
 from Boats as B
 join Reserves as R
@@ -72,7 +72,7 @@ where RedOwners.sid IN (select S.sid    ----- How do you use exists??
 from Sailors S, Reserves R, Boats B
 where S.sid=R.sid and R.bid=B.bid and B.color='green')
 
---4. Find the names of sailors who’ve reserved all boats
+--4. Find the names of sailors whoâ€™ve reserved all boats
 select S.sname
 from Sailors S
 where not exists
@@ -92,7 +92,7 @@ WHERE  NOT EXISTS  (SELECT B.bid
 										AND R.sid=S.sid))
 
 
---5. Find sailors who’ve reserved at least one boat
+--5. Find sailors whoâ€™ve reserved at least one boat
 Select distinct R.sid, S.sname
 from Reserves R
 join Sailors S 
