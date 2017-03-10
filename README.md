@@ -1,12 +1,29 @@
-# Welcome to the SQL wiki!
+# SQL-exercise
+Schemas, Questions &amp; Solutions for SQL Exercising
 
-## Some useful links for reference: 
-1. http://www.w3schools.com/sql/default.asp
-2. http://www.sqltutorial.org/sql-limit/
+## Introduction
+The schemas and questions are 
 
+[1] from Wikibook **SQL Exercises** [https://en.wikibooks.org/wiki/SQL_Exercises]. Solutions are from both this Wikibook and me (exercise 1-8). I also added some questions by myself.
 
---------------------------------------------------------------------------
-_For Any queries, doubts, conceptual clarity feel free to reach out through:_
-* _Email: abhishekmishra87@gmail.com_
-* _LinkedIn: www.linkedin.com/in/abhishekmishra87_
-* _Twitter: abhishek2_10_
+or
+
+[2] given by me using some practical examples I encountered (exercise 9-10).
+
+## Repository Structure
+The repo structure is like below:
+```
+SQL-exercise
+└───SQL_exercise_1
+└───......
+└───SQL_exercise_*
+    │   *_schema_figure.png
+    │   *_build_schema.sql
+    │   *_questions_and_solutions.sql
+
+└───......
+
+```
+
+## License
+Please note this repostory is under the Creative Commons Attribution-ShareAlike License[https://creativecommons.org/licenses/by-sa/3.0/].
