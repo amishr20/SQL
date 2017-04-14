@@ -1,0 +1,23 @@
+Data Source: https://lagunita.stanford.edu/c4x/DB/SQL/asset/moviedata.html
+https://lagunita.stanford.edu/courses/DB/SQL/SelfPaced/courseware/ch-sql/seq-exercise-sql_movie_query_core/
+  Movie ( mID, title, year, director ) 
+  Reviewer ( rID, name ) 
+  Rating ( rID, mID, stars, ratingDate ) 
+  
+Q1. Find the titles of all movies directed by Steven Spielberg. 
+->  SELECT title
+    FROM Movie
+    WHERE director='Steven Spielberg'
+    
+Q2 Find all years that have a movie that received a rating of 4 or 5, and sort them in increasing order. 
+->  SELECT distinct year
+    FROM Movie
+    JOIN Rating 
+    ON Movie.mID = Rating.mID
+    WHERE stars>3
+    ORDER BY year
+ 
+ Pointers: Don't forget distinct ! Remember syntax for Join !
+
+
+
