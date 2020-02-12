@@ -1,24 +1,23 @@
-CALL pp_monitor.drop_table ('pp_oap_am_s_t.Merch_appl');					
-CREATE TABLE pp_oap_am_s_t.Merch_appl
+CREATE TABLE Merch_appl
 (
     id INT ,
     Attri VARCHAR(50) NOT NULL,
     Val VARCHAR(50) NOT NULL
  );
  
-INSERT INTO pp_oap_am_s_t.Merch_appl VALUES (1, 'Name', 'Jolly'); 
-INSERT INTO pp_oap_am_s_t.Merch_appl VALUES (1, 'Loan', '10000'); 
-INSERT INTO pp_oap_am_s_t.Merch_appl VALUES (1, 'Fee', '1000'); 
+INSERT INTO Merch_appl VALUES (1, 'Name', 'Jolly'); 
+INSERT INTO Merch_appl VALUES (1, 'Loan', '10000'); 
+INSERT INTO Merch_appl VALUES (1, 'Fee', '1000'); 
 
-INSERT INTO pp_oap_am_s_t.Merch_appl VALUES (2, 'Name', 'Molly'); 
-INSERT INTO pp_oap_am_s_t.Merch_appl VALUES (2, 'Loan', '5000'); 
-INSERT INTO pp_oap_am_s_t.Merch_appl VALUES (2, 'Fee', '500'); 
+INSERT INTO Merch_appl VALUES (2, 'Name', 'Molly'); 
+INSERT INTO Merch_appl VALUES (2, 'Loan', '5000'); 
+INSERT INTO Merch_appl VALUES (2, 'Fee', '500'); 
 
-INSERT INTO pp_oap_am_s_t.Merch_appl VALUES (3, 'Name', 'Polly'); 
-INSERT INTO pp_oap_am_s_t.Merch_appl VALUES (3, 'Loan', '75000'); 
-INSERT INTO pp_oap_am_s_t.Merch_appl VALUES (3, 'Fee', '10000'); 
+INSERT INTO Merch_appl VALUES (3, 'Name', 'Polly'); 
+INSERT INTO Merch_appl VALUES (3, 'Loan', '75000'); 
+INSERT INTO Merch_appl VALUES (3, 'Fee', '10000'); 
 
-SELECT * FROM pp_oap_am_s_t.Merch_appl;
+SELECT * FROM Merch_appl;
 -----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 -- Method 1 ( As discussed on call)
@@ -28,12 +27,12 @@ SELECT DISTINCT a.id AS id,
 b.val AS NAME,
 c.val AS Loan,
 d.val AS fee
-FROM  pp_oap_am_s_t.Merch_appl a
-LEFT JOIN pp_oap_am_s_t.Merch_appl b
+FROM  Merch_appl a
+LEFT JOIN Merch_appl b
 ON a.id=b.id AND b.attri='Name'
-LEFT JOIN pp_oap_am_s_t.Merch_appl c
+LEFT JOIN Merch_appl c
 ON a.id=c.id AND c.attri='Loan'
-LEFT JOIN pp_oap_am_s_t.Merch_appl d
+LEFT JOIN Merch_appl d
 ON a.id=d.id AND d.attri='Fee'
 
 -----------------------------------------------------------------------------------------------------
@@ -45,12 +44,29 @@ SELECT id,
     Max(CASE WHEN Attri='Name' THEN Val END) AS NAME,
     Max(CASE WHEN Attri='Loan' THEN Val END) AS Loan,
     Max(CASE WHEN Attri='Fee' THEN  Val END) AS Fee
-FROM pp_oap_am_s_t.Merch_appl 
+FROM Merch_appl 
 GROUP BY id;
 
 -----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
--- Method 3 (Unable to run and verify in my environement)
+-- Method 3 (Using PIVOT)
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+SELECT *
+FROM
+(
+  SELECT id, VAL, Attri
+  FROM Merch_appl
+) d
+PIVOT
+(
+  Max(VAL)
+  FOR Attri IN ('NAME', 'Loan', 'Fee')
+) piv;
+
+-----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+-- Method 3 (Using Dynamic pivot - Unable to run and verify in my environement)
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 --Create the dynamic query with all the values for
@@ -64,7 +80,7 @@ DECLARE   @SQLQuery AS NVARCHAR(Max);
 DECLARE   @PivotColumns AS NVARCHAR(Max)
 
 SELECT   @PivotColumns= Coalesce(@PivotColumns + ',','') + QUOTENAME([Attri])
-FROM pp_oap_am_s_t.Merch_appl
+FROM Merch_appl
 
 /* UNCOMMENT TO SEE THE NEW COLUMN NAMES THAT WILL BE CREATED */
 --SELECT   @PivotColumns
@@ -75,8 +91,8 @@ FROM pp_oap_am_s_t.Merch_appl
 
 SET   @SQLQuery =
    N'SELECT [id],' +   @PivotColumns + '
-   INTO pp_oap_am_s_t.Merch_appl_temp
-   FROM pp_oap_am_s_t.Merch_appl
+   INTO Merch_appl_temp
+   FROM Merch_appl
    
    PIVOT( MAX([Average Rent])
       FOR [Attri] IN (' + @PivotColumns + ')) AS Q'
@@ -87,4 +103,17 @@ SET   @SQLQuery =
 EXEC sp_executesql @SQLQuery
 
 /* VIEW PIVOTED TABLE RESULTS */
-SELECT * FROM pp_oap_am_s_t.Merch_appl_temp
+SELECT * FROM Merch_appl_temp
+
+---------
+SELECT *
+FROM
+(
+  SELECT id, VAL, Attri
+  FROM Merch_appl
+) d
+PIVOT
+(
+  Max(VAL)
+  FOR Attri IN ('NAME', 'Loan', 'Fee')
+) piv;
